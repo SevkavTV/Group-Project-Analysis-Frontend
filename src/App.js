@@ -1,7 +1,7 @@
 import logo from './logo.png';
 import './App.css';
-import SearchBar from 'material-ui-search-bar'
-import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel} from '@material-ui/core';
+import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel, TextField} from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab'
 import {
   MuiPickersUtilsProvider,
   DatePicker,
@@ -10,10 +10,18 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import { useState } from 'react';
 import { yellow } from '@material-ui/core/colors';
-
+import { getAllTeams } from './httpRequests'
 
 
 function App() {
+
+  const [searchTeam, setSearchTeam] = useState('')
+  const [allTeams, setAllTeams] = useState(undefined)
+  if (!allTeams){
+    getAllTeams().then((teams) => {
+      setAllTeams(teams)
+    })
+  }
   
   const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -21,10 +29,19 @@ function App() {
     setSelectedDate(date);
   };
 
+
   return (
     <div className="App">
       <img src={logo} alt="Logo" className="Logo-image"/>
-      <SearchBar value='Type your team' className="SearchBar"/>
+      <Autocomplete
+        className='SearchBar'
+        id="free-solo-demo"
+        freeSolo
+        options={allTeams ? allTeams.map((team) => team['team_name']) : null}
+        renderInput={(params) => (
+          <TextField {...params} value={searchTeam} onChange={(event) => setSearchTeam(event.target.value)} label="Choose your team" margin="normal" variant="outlined" />
+        )}
+      />
       <div class = "Texthead">or use Advanced search below</div>
       <hr class = "Line"></hr>
       <Grid container spacing={3} direction="row" className = "Main">
