@@ -1,18 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
 .App {
   text-align: center;
+  font-family: 'Merriweather', serif;
 }
 
 .SearchBar {
-  margin-top: 100px;
+  margin-top: 2%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 1%;
   width: 500px;
+}
+
+.Logo-image{
+  margin-top: 2%;
+  width: 897px;
+  height: 75px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+
+.Firstrow{
+  text-align: left;
+}
+
+.Line{
+  width: 500px;
+  margin-bottom: 3%;
+}
+
+#footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.Texthead{
+  font-family: 'Merriweather', serif;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -34,6 +69,14 @@
 .App-link {
   color: #61dafb;
 }
+
+.head-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 
 @keyframes App-logo-spin {
   from {
