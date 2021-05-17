@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <img src={logo} alt="Logo" className="Logo-image"/>
-      <SearchBar value='Type your team' className="SearchBar"/>
+      <SearchBar className="SearchBar" placeholder="Type the name of the team"/>
       <div class = "Texthead">or use Advanced search below</div>
       <hr class = "Line"></hr>
       <Grid container spacing={3} direction="row" className = "Main">
@@ -63,10 +63,10 @@ function App() {
           <Grid item xs={12}>
             <FormControl component="fieldset">
               <RadioGroup aria-label="gender" name="gender1">
-                <FormControlLabel value="female" control={<Radio />} label="Success of schemes" />
-                <FormControlLabel value="male" control={<Radio />} label="Ball posession" />
-                <FormControlLabel value="other" control={<Radio />} label="Fouls" />
-                <FormControlLabel value="disabled" control={<Radio />} label="Shots" />
+                <FormControlLabel value="female" control={<Radio />} label={<Typography style={{fontFamily: 'Merriweather'}}>Success of schemes</Typography>}/>
+                <FormControlLabel value="male" control={<Radio />} label={<Typography style={{fontFamily: 'Merriweather'}}>Ball posession</Typography>} />
+                <FormControlLabel value="other" control={<Radio />} label={<Typography style={{fontFamily: 'Merriweather'}}>Fouls</Typography>} />
+                <FormControlLabel value="disabled" control={<Radio />} label={<Typography style={{fontFamily: 'Merriweather'}}>Shots</Typography>} />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -90,7 +90,9 @@ function App() {
                   }}
                 />
                 <DatePicker
+                  disableToolbar
                   margin="normal"
+                  variant="inline"
                   id="date-picker-dialog"
                   label="End Date"
                   format="MM/dd/yyyy"
