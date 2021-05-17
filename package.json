@@ -15,9 +15,11 @@
     "bootstrap": "^4.6.0",
     "date-fns": "^2.21.3",
     "material-ui-search-bar": "^1.0.0",
+    "plotly.js": "^1.58.4",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-dom": "^17.0.2",
+    "react-plotly.js": "^2.5.1",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
