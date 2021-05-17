@@ -18,8 +18,8 @@ export const getTeamByLeagueId = async(leagueId) => {
     return response.data
 }
 
-export const getAnalysisInfo = async(teamId, criterion) => {
-    const response = await axios.post('http://127.0.0.1:5000/api/analyze', { 'team_id': teamId, 'criterion': criterion})
+export const getAnalysisInfo = async(teamId, criterion, start_date, end_date) => {
+    const response = await axios.post('http://127.0.0.1:5000/api/analyze', { 'team_id': teamId, 'criterion': criterion, 'start_date': start_date, 'end_date': end_date})
 
     return response.data
 }

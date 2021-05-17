@@ -34,26 +34,49 @@ function App() {
   const [currTeam, setCurrTeam] = useState('')
   const [teams, setTeams] = useState(undefined)
 
-  const handleLeagueChange = (league) => {
-    setCurrTeam('')
-    setAnalysisInfo(undefined)
-    setCurrLeague(league)
-    getTeamByLeagueId(league).then((teams) => {
-      setTeams(teams)
-    })
+  const handleLeagueChange = (league, param) => {
+    if(param === 'search'){
+      setCurrTeam('')
+      setAnalysisInfo(undefined)
+      setCurrLeague(league['league_id'],)
+      getTeamByLeagueId(league['league_id'],).then((teams) => {
+        setTeams(teams)
+      })
+      handleTeamChange(league['team_id'], 'search')
+    }else{
+      setSearchTeam(undefined)
+      setCurrTeam('')
+      setAnalysisInfo(undefined)
+      setCurrLeague(league)
+      getTeamByLeagueId(league).then((teams) => {
+        setTeams(teams)
+      })
+    }
   }
 
   const [analysisInfo, setAnalysisInfo] = useState(undefined)
 
-  const handleTeamChange = (team) => {
-    setCurrTeam(team)
-    setAnalysisInfo(undefined)
+  const handleTeamChange = (team, param) => {
+    if(param === 'search'){
+      setCurrTeam(team)
+      setAnalysisInfo(undefined)
+    }else{
+      setSearchTeam(undefined)
+      setCurrTeam(team)
+      setAnalysisInfo(undefined)
+    }
   }
 
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedStartDate, setSelectedStartDate] = useState(new Date(2015, 0, 1))
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleStartDateChange = (date) => {
+    setSelectedStartDate(date);
+  };
+
+  const [selectedEndDate, setSelectedEndDate] = useState(new Date(2020, 11, 31))
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
   };
 
   const [criterion, setCriterion] = useState(undefined)
@@ -62,11 +85,25 @@ function App() {
 
   const handleAnalyze = () => {
     if (currTeam && criterion) {
-      getAnalysisInfo(currTeam, criterion).then((info) => {
+      let startDate = [
+        selectedStartDate.getFullYear(),
+        ('0' + (selectedStartDate.getMonth() + 1)).slice(-2),
+        ('0' + selectedStartDate.getDate()).slice(-2)
+      ].join('-');
+      
+
+      let endDate = [
+        selectedEndDate.getFullYear(),
+        ('0' + (selectedEndDate.getMonth() + 1)).slice(-2),
+        ('0' + selectedEndDate.getDate()).slice(-2)
+      ].join('-');
+
+      getAnalysisInfo(currTeam, criterion, startDate, endDate).then((info) => {
         setAnalysisInfo(info)
       })
     }
   }
+
 
   return (
     allTeams && leagues ?
@@ -74,12 +111,29 @@ function App() {
         <img src={logo} alt="Logo" className="Logo-image" />
         <Autocomplete
           className='SearchBar'
-          id="free-solo-demo"
-          freeSolo
-          options={allTeams ? allTeams.map((team) => team['team_name']) : null}
-          renderInput={(params) => (
-            <TextField {...params} value={searchTeam} onChange={(event) => setSearchTeam(event.target.value)} label="Choose your team" margin="normal" variant="outlined" />
-          )}
+          id="combo-box-demo"
+          options={allTeams ? allTeams : null}
+          getOptionLabel={(option) => option['team_name']}
+          value={searchTeam}
+          renderInput={(params) => <TextField {...params} label="Choose your team" variant="outlined" />}
+          onChange={(event, value) => {
+            if(value){
+              setSearchTeam(value)
+              handleLeagueChange(value, 'search');
+            }
+          }}
+          renderOption={(option) => {
+            return(
+              <Grid container spacing={1}>
+                <Grid item>
+                  <img src={option['team_badge']} style={{ width: '20px', height: '20px' }} />
+                </Grid>
+                <Grid item>
+                  {option['team_name']}
+                </Grid>
+              </Grid>
+            )
+          }}
         />
         <div class="Texthead">or use Advanced search below</div>
         <hr class="Line"></hr>
@@ -93,7 +147,7 @@ function App() {
             <Grid item xs={12}>
               <Select
                 value={currLeague}
-                onChange={(event) => handleLeagueChange(event.target.value)}
+                onChange={(event) => handleLeagueChange(event.target.value, 'change')}
               >
                 {
                   leagues.map((league) => {
@@ -120,7 +174,7 @@ function App() {
               <Select
                 disabled={currLeague ? false : true}
                 value={currTeam}
-                onChange={(event) => handleTeamChange(event.target.value)}
+                onChange={(event) => handleTeamChange(event.target.value, 'change')}
               >
                 {
                   teams?.map((team) => {
@@ -162,12 +216,12 @@ function App() {
                   <DatePicker
                     disableToolbar
                     variant="inline"
-                    format="MM/dd/yyyy"
+                    format="dd/MM/yyyy"
                     margin="normal"
                     id="date-picker-inline"
                     label="Start Date"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    value={selectedStartDate}
+                    onChange={handleStartDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -178,9 +232,9 @@ function App() {
                     variant="inline"
                     id="date-picker-dialog"
                     label="End Date"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    format="dd/MM/yyyy"
+                    value={selectedEndDate}
+                    onChange={handleEndDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
