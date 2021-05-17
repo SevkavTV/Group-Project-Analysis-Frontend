@@ -52,7 +52,7 @@ const AnalysisPlot = (props) => {
     return (
         <Plot
             data={[trace1, trace2, trace3]}
-            layout={{ title: title, barmode: 'stack' }}
+            layout={{ title: title, barmode: 'stack'}}
         />
     );
     

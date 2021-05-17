@@ -1,6 +1,6 @@
 import logo from './logo.png';
 import './App.css';
-import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel, TextField, MenuItem, CircularProgress, Button } from '@material-ui/core';
+import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel, TextField, MenuItem, CircularProgress, Button} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab'
 import {
   MuiPickersUtilsProvider,
@@ -138,9 +138,9 @@ function App() {
         <div class="Texthead">or use Advanced search below</div>
         <hr class="Line"></hr>
         <Grid container spacing={3} direction="row" className="Main">
-          <Grid item xs={2}>
+          <Grid item xs={1}>
           </Grid>
-          <Grid item xs={6} className="Firstrow">
+          <Grid item xs={3} className="Firstrow" style={{width: 200}}>
             <Grid item xs={12} >
               1. Choose the league
             </Grid>
@@ -195,7 +195,7 @@ function App() {
               </Select>
             </Grid>
             <Grid item xs={12}>
-              3. Choose the criteria to analyze
+              3. Choose the criteria
             </Grid>
             <Grid item xs={12}>
               <FormControl component="fieldset">
@@ -242,13 +242,13 @@ function App() {
                 </Grid>
               </MuiPickersUtilsProvider>
             </Grid>
-            <Grid item xs={12}>
-              <Button onClick={handleAnalyze}>
-                Аналіз
+            <Grid item xs={12} className='Summary-button'>
+              <Button variant='outlined' onClick={handleAnalyze} style={{textTransform: 'none', width: 170}}>
+                <Typography style={{ fontFamily: 'Merriweather'}}>Analysis</Typography>
               </Button>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             {
               analysisInfo ?
                 <AnalysisPlot info={analysisInfo} criterion={criterion}/>
