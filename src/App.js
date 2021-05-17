@@ -1,6 +1,6 @@
 import logo from './logo.png';
 import './App.css';
-import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel, TextField} from '@material-ui/core';
+import { Grid, Typography, FormControl, InputLabel, Select, FormLabel, RadioGroup, Radio, FormControlLabel, TextField, MenuItem, CircularProgress} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab'
 import {
   MuiPickersUtilsProvider,
@@ -10,7 +10,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import { useState } from 'react';
 import { yellow } from '@material-ui/core/colors';
-import { getAllTeams } from './httpRequests'
+import { getAllTeams, getAvailableLeagues } from './httpRequests'
 
 
 function App() {
@@ -22,6 +22,14 @@ function App() {
       setAllTeams(teams)
     })
   }
+
+  const [currLeague, setCurrLeague] = useState('')
+  const [leagues, setLeagues] = useState(undefined)
+  if(!leagues){
+    getAvailableLeagues().then((leagues) => {
+      setLeagues(leagues)
+    })
+  }
   
   const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -29,8 +37,9 @@ function App() {
     setSelectedDate(date);
   };
 
-
+  console.log(leagues)
   return (
+    allTeams && leagues ?
     <div className="App">
       <img src={logo} alt="Logo" className="Logo-image"/>
       <Autocomplete
@@ -54,11 +63,15 @@ function App() {
           <Grid item xs={12}>
             <Select
               native
+              value={currLeague}
             >
-              <option aria-label="None" value="" />
-              <option value={10}>Ten</option>
-              <option value={20}>Twenty</option>
-              <option value={30}>Thirty</option>
+              {
+                  leagues.map((league) => {
+                    <MenuItem value={league['league_name']}>
+                      {league['league_name']}
+                    </MenuItem>
+                  })
+              }  
             </Select>
           </Grid>
           <Grid item xs={12}>
@@ -131,6 +144,8 @@ function App() {
         Creators: Vsevolod Archakov, Mykola Kryvyi, Mykhailo Mulko, Oleg Palka, Sergiy Khuharchuk
       </div>
     </div>
+    :
+    <CircularProgress />
   );
 }
 
