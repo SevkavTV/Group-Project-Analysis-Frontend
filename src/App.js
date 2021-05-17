@@ -15,6 +15,8 @@ import AnalysisPlot from './AnalysisPlot'
 
 function App() {
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const [searchTeam, setSearchTeam] = useState('')
   const [allTeams, setAllTeams] = useState(undefined)
   if (!allTeams) {
@@ -85,6 +87,7 @@ function App() {
 
   const handleAnalyze = () => {
     if (currTeam && criterion) {
+      setIsLoading(true)
       let startDate = [
         selectedStartDate.getFullYear(),
         ('0' + (selectedStartDate.getMonth() + 1)).slice(-2),
@@ -99,6 +102,7 @@ function App() {
       ].join('-');
 
       getAnalysisInfo(currTeam, criterion, startDate, endDate).then((info) => {
+        setIsLoading(false)
         setAnalysisInfo(info)
       })
     }
@@ -250,10 +254,13 @@ function App() {
           </Grid>
           <Grid item xs={6}>
             {
-              analysisInfo ?
-                <AnalysisPlot info={analysisInfo} criterion={criterion}/>
-              :
-                'Please, choose team and criteria to see a chart with analysis!'
+              isLoading ?
+                  <CircularProgress />
+                :
+                  analysisInfo ?
+                    <AnalysisPlot info={analysisInfo} criterion={criterion}/>
+                  :
+                    'Please, choose team and criteria to see a chart with analysis!'
             }
           </Grid>
         </Grid>
